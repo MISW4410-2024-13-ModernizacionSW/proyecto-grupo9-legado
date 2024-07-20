@@ -19,6 +19,7 @@ services:
       - user_db
     networks:
       - user_net
+      - app_net
   user_db:
     image: postgres
     environment:
@@ -27,6 +28,38 @@ services:
       - POSTGRES_PASSWORD=postgres
     networks:
       - user_net
+  employe_app:
+    build: 
+      context: ./Employee_service
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: "employe_db"
+      DB_NAME: "employes"
+      DB_PORT: "5432"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+    ports:
+      - "3001:3001"
+    depends_on:
+      - employe_db
+    links:
+      - employe_db
+    networks:
+      - employe_net
+      - app_net
+  employe_db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=employe
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - employe_net
 networks:
+  app_net:
+    driver: bridge
   user_net:
     driver: bridge
+  employe_net:
+    driver: bridge
+  
