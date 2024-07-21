@@ -33,6 +33,7 @@ services:
       context: ./Employee_service
       dockerfile: Dockerfile
     environment:
+      USERS_PATH: "http://user_app:3000"
       DB_HOST: "employe_db"
       DB_NAME: "employes"
       DB_PORT: "5432"
@@ -50,7 +51,7 @@ services:
   employe_db:
     image: postgres
     environment:
-      - POSTGRES_DB=employe
+      - POSTGRES_DB=employes
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     networks:
